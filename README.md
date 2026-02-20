@@ -1,0 +1,175 @@
+# Multi-Tenant Inventory Management System
+
+A SaaS-based inventory management platform where multiple businesses manage inventory, suppliers, and orders independently with complete data isolation.
+
+Built using:
+- Node.js
+- Express
+- MongoDB
+- React
+- Socket.io
+- JWT Authentication
+
+---
+
+## Features Implemented
+
+### Multi-Tenant Architecture
+- Row-level isolation using tenantId
+- Multiple tenants supported
+- Separate users per tenant
+- Role-based access control
+
+### Inventory Management
+- Products with multiple variants (size, color, etc.)
+- Independent stock per SKU
+- Full stock movement tracking
+- Smart low-stock alerts (considering pending POs)
+
+### Orders
+- Concurrency-safe order processing
+- Prevents negative stock
+- Handles cancellation
+- Transaction-based updates
+
+### Suppliers & Purchase Orders
+- Supplier management
+- Purchase Orders with status tracking
+- Partial delivery handling
+- Automatic stock update on receipt
+
+### Dashboard & Analytics
+- Inventory value calculation
+- Low-stock items
+- Top 5 sellers (last 30 days)
+- Stock movement graph (7 days)
+- Optimized for 10,000+ products
+
+### Real-Time Updates
+- Socket.io integration for live stock & order updates
+
+---
+
+## Tech Stack
+
+Backend:
+- Node.js
+- Express
+- MongoDB + Mongoose
+- JWT Authentication
+- MongoDB Transactions
+- Socket.io
+
+Frontend:
+- React (Hooks)
+- Context API
+- React Router
+- Axios
+
+---
+
+## Setup Instructions
+
+### 1. Clone Repository
+
+git clone <repo-link>
+cd multi-tenant-inventory
+
+---
+
+### 2. Backend Setup
+
+cd server
+npm install
+
+Create `.env` file using `.env.example`
+
+Example:
+
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/inventory
+JWT_SECRET=your_secret_key
+
+Run:
+
+npm run dev
+
+---
+
+### 3. Seed Database
+
+cd server
+node src/seed/seed.js
+
+This creates:
+- 2 tenants
+- 2 Owners
+- 2 Managers
+- 2 Staff users
+- Sample products & suppliers
+
+---
+
+### Test Credentials
+
+Tenant 1:
+Owner: owner1@test.com
+Password: 123456
+
+Tenant 2:
+Owner: owner2@test.com
+Password: 123456
+
+---
+
+### 4. Frontend Setup
+
+cd client
+npm install
+npm run dev
+
+---
+
+## Assumptions Made
+
+- Single MongoDB instance
+- Tenant isolation via row-level security
+- Basic UI prioritizing functionality over design
+- Stock threshold fixed per variant
+
+---
+
+## Known Limitations
+
+- No automated testing
+- No Redis caching
+- Basic UI styling
+- No advanced search optimization
+
+---
+
+## Time Breakdown (Approx. 18 Hours)
+
+Backend Setup & Auth – 3 hours
+Multi-Tenant & Roles – 2 hours
+Products & Variants – 3 hours
+Orders & Concurrency – 4 hours
+Purchase Orders – 3 hours
+Dashboard & Optimization – 2 hours
+Frontend – 1 hour
+
+---
+
+## Future Improvements
+
+- Redis caching
+- Background jobs for alerts
+- Advanced reporting
+- Multi-language support
+- Deployment with CI/CD
+
+---
+
+## Final Note
+
+The focus of this implementation was correctness, concurrency safety, and clear architectural decisions while keeping the system scalable and maintainable.
