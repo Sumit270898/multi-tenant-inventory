@@ -157,3 +157,28 @@ export const getStockMovement = async (req, res, next) => {
     next(err);
   }
 };
+
+/**
+ * List stock movements for the tenant (for Stock Movements page).
+ * GET /api/dashboard/stock-movements?days=30
+ */
+export const getStockMovementList = async (req, res, next) => {
+  try {
+    const tenantId = toObjectId(req.tenantId);
+    const days = Number(req.query.days) || 30;
+    const from = new Date();
+    from.setDate(from.getDate() - days);
+
+    const movements = await StockMovement.find({
+      tenantId,
+      createdAt: { $gte: from },
+    })
+      .populate('productId', 'name')
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.json(movements);
+  } catch (err) {
+    next(err);
+  }
+};

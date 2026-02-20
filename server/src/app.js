@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import supplierRoutes from './routes/supplier.routes.js';
 import purchaseOrderRoutes from './routes/purchaseOrder.routes.js';
+import orderRoutes from './routes/order.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
 
 const app = express();
@@ -16,6 +17,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/purchase-orders', purchaseOrderRoutes);
+app.use('/api/orders', orderRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 // Health check

@@ -5,6 +5,7 @@ import {
   getLowStock,
   getTopSellers,
   getStockMovement,
+  getStockMovementList,
 } from '../controllers/dashboard.controller.js';
 
 const router = express.Router();
@@ -15,5 +16,6 @@ router.get('/inventory-value', getInventoryValue);
 router.get('/low-stock', getLowStock);
 router.get('/top-sellers', getTopSellers);
 router.get('/stock-movement', getStockMovement);
+router.get('/stock-movements', getStockMovementList);
 
 export default router;

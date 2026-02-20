@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import PurchaseOrder from '../models/PurchaseOrder.js';
 import Supplier from '../models/Supplier.js';
 import { updateStock } from '../services/stock.service.js';
+import { getIO } from '../socket.js';
 
 export const createPurchaseOrder = async (req, res, next) => {
   try {
@@ -103,6 +104,9 @@ export const markReceived = async (req, res, next) => {
     await po.save({ session });
 
     await session.commitTransaction();
+    try {
+      getIO().emit('stockUpdated');
+    } catch (_) {}
     const updated = await PurchaseOrder.findById(poId).populate('supplierId', 'name contact');
     res.json(updated);
   } catch (err) {

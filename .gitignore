@@ -1,0 +1,5 @@
+# Environment (do not commit secrets)
+.env
+server/.env
+server/node_modules
+client/node_modules
