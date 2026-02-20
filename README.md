@@ -70,14 +70,21 @@ Frontend:
 
 ## Setup Instructions
 
-### 1. Clone Repository
+### 1. Prerequisites
 
-git clone <repo-link>
+- Node.js 18+ and npm
+- MongoDB (local or connection string)
+
+### 2. Clone Repository
+
+```bash
+git clone <your-repo-url>
 cd multi-tenant-inventory
+```
 
 ---
 
-### 2. Backend Setup
+### 3. Backend Setup
 
 cd server
 npm install
@@ -96,33 +103,27 @@ npm run dev
 
 ---
 
-### 3. Seed Database
+### 4. Seed Database
 
+```bash
 cd server
-node src/seed/seed.js
+node src/scripts/seed.js
+```
 
 This creates:
-- 2 tenants
-- 2 Owners
-- 2 Managers
-- 2 Staff users
-- Sample products & suppliers
+- 1 tenant: **Demo Tenant**
+- 1 user: **Demo Admin** (OWNER)
 
 ---
 
 ### Test Credentials
 
-Tenant 1:
-Owner: owner1@test.com
-Password: 123456
-
-Tenant 2:
-Owner: owner2@test.com
-Password: 123456
+Email: `admin@demo.com`  
+Password: `demo123`
 
 ---
 
-### 4. Frontend Setup
+### 5. Frontend Setup
 
 cd client
 npm install

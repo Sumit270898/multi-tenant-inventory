@@ -38,6 +38,13 @@ Cons:
 
 If scaling requires stronger isolation in future, migration to database-per-tenant is possible.
 
+### Security
+
+- JWT stored in memory / httpOnly cookies (no long-lived localStorage if possible)
+- All write/read paths go through `tenantMiddleware` so tenantId cannot be overridden by client
+- Passwords hashed (e.g. bcrypt); never stored in plain text
+- RBAC enforced in middleware before controller logic
+
 ---
 
 ## 2. Data Modeling Decisions
@@ -168,16 +175,23 @@ Requirement: < 2 seconds for 10,000+ products.
    - variants.sku
    - order date
 
-2. Aggregation Pipelines:
+2. Indexes (per collection):
+   - **Users:** `tenantId`, `email` (unique)
+   - **Products:** `tenantId`, `tenantId + variants.sku`
+   - **Orders:** `tenantId`, `tenantId + createdAt`
+   - **StockMovements:** `tenantId`, `tenantId + createdAt`
+   - **PurchaseOrders:** `tenantId`, `tenantId + createdAt`
+
+3. Aggregation Pipelines:
    - Inventory value calculation
    - Top 5 sellers (30 days)
    - Stock movement graph (7 days)
 
-3. Lean Queries:
+4. Lean Queries:
    - Used `.lean()` where possible
    - Avoided unnecessary population
 
-4. Modular Monolith Structure:
+5. Modular Monolith Structure:
    - Clear service layer
    - Scalable architecture
 
@@ -209,7 +223,18 @@ Improves UX without complex architecture.
 
 ---
 
-## 8. Scalability Considerations
+## 8. Request Flow (High Level)
+
+1. Client sends request with JWT.
+2. Auth middleware validates JWT, attaches user (and tenantId) to `req`.
+3. Tenant middleware ensures tenantId is consistent (e.g. from token, not body).
+4. Role middleware checks permission for the route.
+5. Controller calls service layer; all DB queries include tenantId.
+6. Response returned; for relevant events, Socket.io broadcasts to tenant room.
+
+---
+
+## 9. Scalability Considerations
 
 If system scales:
 
@@ -222,7 +247,7 @@ Current structure supports smooth migration.
 
 ---
 
-## 9. Trade-offs & Improvements
+## 10. Trade-offs & Improvements
 
 Given more time, I would:
 
