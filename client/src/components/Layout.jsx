@@ -18,13 +18,14 @@ import {
   SwapHoriz as StockIcon,
   LocalShipping as SuppliersIcon,
   Assignment as POIcon,
+  People as UsersIcon,
   Logout as LogoutIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../context/AuthContext';
 
 const DRAWER_WIDTH = 260;
 
-const navLinks = [
+const navLinksBase = [
   { to: '/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
   { to: '/products', label: 'Products', icon: <ProductsIcon /> },
   { to: '/orders', label: 'Orders', icon: <OrdersIcon /> },
@@ -37,6 +38,11 @@ export function Layout() {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const navLinks = [
+    ...navLinksBase,
+    ...(user?.role === 'OWNER' ? [{ to: '/users', label: 'Team (Users)', icon: <UsersIcon /> }] : []),
+  ];
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>

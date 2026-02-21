@@ -94,7 +94,7 @@ Create `.env` file using `.env.example`
 Example:
 
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/inventory
+MONGODB_URI=mongodb://localhost:27017/inventory
 JWT_SECRET=your_secret_key
 
 Run:
@@ -111,15 +111,23 @@ node src/scripts/seed.js
 ```
 
 This creates:
-- 1 tenant: **Demo Tenant**
-- 1 user: **Demo Admin** (OWNER)
+- **2 tenants:** Acme Corp, Beta Inc
+- **6 users** (3 per tenant): Owner, Manager, Staff
 
 ---
 
 ### Test Credentials
 
-Email: `admin@demo.com`  
-Password: `demo123`
+Password for all users: `demo123`
+
+| Tenant    | Role   | Email             |
+|-----------|--------|-------------------|
+| Acme Corp | Owner  | `owner1@test.com` |
+| Acme Corp | Manager| `manager1@test.com` |
+| Acme Corp | Staff  | `staff1@test.com` |
+| Beta Inc  | Owner  | `owner2@test.com` |
+| Beta Inc  | Manager| `manager2@test.com` |
+| Beta Inc  | Staff  | `staff2@test.com` |
 
 ---
 

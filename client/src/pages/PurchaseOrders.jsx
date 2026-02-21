@@ -2,11 +2,16 @@ import { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Button, Alert, Card, CardContent } from '@mui/material';
 import api from '../api/axios';
 import { useSocket } from '../context/SocketContext';
+import { useAuth } from '../context/AuthContext';
 
 const emptyItem = () => ({ productId: '', sku: '', quantityOrdered: 1, price: 0 });
 
+const canManagePOs = (role) => role === 'OWNER' || role === 'MANAGER';
+
 export function PurchaseOrders() {
+  const { user } = useAuth();
   const { revisionStock } = useSocket();
+  const canCreateOrReceive = canManagePOs(user?.role);
   const [suppliers, setSuppliers] = useState([]);
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -122,7 +127,9 @@ export function PurchaseOrders() {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="h5" fontWeight={600}>Purchase Orders</Typography>
-        <Button variant="contained" onClick={openCreateForm}>Create Purchase Order</Button>
+        {canCreateOrReceive && (
+          <Button variant="contained" onClick={openCreateForm}>Create Purchase Order</Button>
+        )}
       </Box>
 
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -223,7 +230,7 @@ export function PurchaseOrders() {
                       ))}
                     </ul>
                   )}
-                  {po.status !== 'RECEIVED' && (
+                  {po.status !== 'RECEIVED' && canCreateOrReceive && (
                     <button
                       type="button"
                       onClick={() => handleMarkReceived(po._id)}
